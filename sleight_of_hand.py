@@ -1,5 +1,5 @@
 """
-ID 51241536
+ID 51305900
 """
 import sys
 from collections import Counter
@@ -12,7 +12,7 @@ def main():
         line = sys.stdin.readline().rstrip()
         fields += [int(i) for i in line if i != '.']
     counter = Counter(fields).most_common()
-    print(len(list(filter(lambda x: x[1] <= 2 * k, counter))))
+    print(len([i for i in counter if i[1] <= 2 * k]))
 
 
 if __name__ == '__main__':

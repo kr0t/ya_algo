@@ -1,19 +1,19 @@
 """
-ID 51240366
+ID 51306059
 """
 
 
 def main():
     n = int(input())
-    lst = list(map(int, input().split()))
-    idx_zeros = [i for i in range(len(lst)) if lst[i] == 0]
+    lst = [int(i) for i in input().split()]
+    idx_zeros = [idx for idx, value in enumerate(lst) if value == 0]
     nearest = [0] * n
-    for i in range(idx_zeros[0], len(lst), 1):
+    for i in range(idx_zeros[0], len(lst)):
         if lst[i] == 0:
             nearest[i] = 0
         else:
             nearest[i] += nearest[i-1] + 1
-    for i in range(idx_zeros[-1], 0, -1):
+    for i in range(idx_zeros[-1], idx_zeros[0], -1):
         if lst[i] == 0:
             nearest[i] = 0
         else:
