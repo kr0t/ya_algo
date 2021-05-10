@@ -1,47 +1,48 @@
 """
-ID 51332482
+ID 51347311
 """
+OPERATORS = ['+', '-', '*', '/']
+
+OPERATIONS = {
+    '+': lambda x1, x2: x1 + x2,
+    '-': lambda x1, x2: x1 - x2,
+    '*': lambda x1, x2: x1 * x2,
+    '/': lambda x1, x2: x1 // x2,
+}
 
 
-class myStack:
+class MyStack:
     def __init__(self):
-        self.items = []
+        self.__items = []
 
     def __str__(self):
-        return f'{self.items}'
+        return f'{self.__items}'
 
     def push(self, item):
-        self.items.append(item)
+        self.__items.append(item)
 
     def pop(self):
-        return self.items.pop()
+        try:
+            return self.__items.pop()
+        except IndexError:
+            return 'Empty stack - no item to pop up'
 
     def peek(self):
-        return self.items[-1]
+        try:
+            return self.__items[-1]
+        except IndexError:
+            return 'Empty stack - no item to pop up'
 
 
 if __name__ == '__main__':
-    _stack = myStack()
-    operators = ['+', '-', '*', '/']
+    _stack = MyStack()
     s = input().rstrip().split()
     for i in s:
-        if i not in operators:
+        if i not in OPERATORS:
             _stack.push(int(i))
         else:
-            if i == '+':
-                op1 = _stack.pop()
-                op2 = _stack.pop()
-                _stack.push(op2 + op1)
-            elif i == '-':
-                op1 = _stack.pop()
-                op2 = _stack.pop()
-                _stack.push(op2 - op1)
-            elif i == '*':
-                op1 = _stack.pop()
-                op2 = _stack.pop()
-                _stack.push(op2 * op1)
-            elif i == '/':
-                op1 = _stack.pop()
-                op2 = _stack.pop()
-                _stack.push(op2 // op1)
+            f = OPERATIONS[i]
+            op1 = _stack.pop()
+            op2 = _stack.pop()
+            _stack.push(f(op2, op1))
     print(_stack.peek())

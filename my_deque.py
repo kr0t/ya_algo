@@ -1,62 +1,66 @@
 """
-ID 51329618
+ID 51360291
 """
-
 import sys
+
+
+class MyException(Exception):
+    pass
 
 
 class Deque:
     def __init__(self, n):
-        self.queue = [None] * n
-        self.max_n = n
-        self.head = 0
-        self.tail = 0
-        self.deque_size = 0
+        self.__queue = [None] * n
+        self.__max_n = n
+        self.__head = 0
+        self.__tail = 0
+        self.__deque_size = 0
 
     def __str__(self):
-        return f'Deque({self.max_n})'
+        return f'Deque({self.__max_n})'
+
+    def is_not_full(self):
+        return self.__deque_size != self.__max_n
 
     def is_empty(self):
-        return self.deque_size == 0
+        return self.__deque_size == 0
 
     def push_back(self, item):
-        if self.deque_size != self.max_n:
-            self.queue[self.tail] = item
-            self.tail = (self.tail + 1) % self.max_n
-            self.deque_size += 1
+        if self.is_not_full():
+            self.__queue[self.__tail] = item
+            self.__tail = (self.__tail + 1) % self.__max_n
+            self.__deque_size += 1
         else:
-            print('error')
+            raise MyException
 
     def pop_back(self):
         if self.is_empty():
-            print('error')
-            return
-        x = self.queue[self.tail - 1]
-        self.queue[self.tail - 1] = None
-        self.tail = (self.tail - 1) % self.max_n
-        self.deque_size -= 1
+            raise MyException
+        x = self.__queue[self.__tail - 1]
+        self.__queue[self.__tail - 1] = None
+        self.__tail = (self.__tail - 1) % self.__max_n
+        self.__deque_size -= 1
         print(x)
 
     def push_front(self, item):
-        if self.deque_size != self.max_n:
-            self.queue[self.head - 1] = item
-            self.head = (self.head - 1) % self.max_n
-            self.deque_size += 1
+        if self.is_not_full():
+            self.__queue[self.__head - 1] = item
+            self.__head = (self.__head - 1) % self.__max_n
+            self.__deque_size += 1
         else:
-            print('error')
+            raise MyException
 
     def pop_front(self):
         if self.is_empty():
-            print('error')
-            return
-        x = self.queue[self.head]
-        self.queue[self.head] = None
-        self.head = (self.head + 1) % self.max_n
-        self.deque_size -= 1
+            raise MyException
+        x = self.__queue[self.__head]
+        self.__queue[self.__head] = None
+        self.__head = (self.__head + 1) % self.__max_n
+        self.__deque_size -= 1
         print(x)
 
     def size(self):
-        print(self.deque_size)
+        return self.__deque_size
 
 
 if __name__ == '__main__':
@@ -64,13 +68,17 @@ if __name__ == '__main__':
     n = int(input())
     m = Deque(int(input()))
 
+    ACTIONS = {
+        'push_back': lambda x: m.push_back(x),
+        'push_front': lambda x: m.push_front(x),
+        'pop_front': lambda: m.pop_front(),
+        'pop_back': lambda: m.pop_back()
+    }
+
     for i in range(n):
-        line = sys.stdin.readline().rstrip().split()
-        if line[0] == 'push_back':
-            m.push_back(int(line[1]))
-        elif line[0] == 'push_front':
-            m.push_front(int(line[1]))
-        elif line[0] == 'pop_front':
-            m.pop_front()
-        elif line[0] == 'pop_back':
-            m.pop_back()
+        command, *arg = sys.stdin.readline().rstrip().split()
+        try:
+            f = ACTIONS[command]
+            f(int(arg[0])) if arg else f()
+        except MyException:
+            print('error')
