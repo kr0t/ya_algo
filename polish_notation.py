@@ -1,5 +1,5 @@
 """
-ID 51347311
+ID 51397487
 """
 OPERATORS = ['+', '-', '*', '/']
 
@@ -9,6 +9,10 @@ OPERATIONS = {
     '*': lambda x1, x2: x1 * x2,
     '/': lambda x1, x2: x1 // x2,
 }
+
+
+class StackIndexException(Exception):
+    pass
 
 
 class MyStack:
@@ -25,13 +29,13 @@ class MyStack:
         try:
             return self.__items.pop()
         except IndexError:
-            return 'Empty stack - no item to pop up'
+            raise StackIndexException
 
     def peek(self):
         try:
             return self.__items[-1]
         except IndexError:
-            return 'Empty stack - no item to pop up'
+            raise StackIndexException
 
 
 if __name__ == '__main__':

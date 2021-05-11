@@ -1,10 +1,10 @@
 """
-ID 51360291
+ID 51397289
 """
 import sys
 
 
-class MyException(Exception):
+class DequeSizeException(Exception):
     pass
 
 
@@ -31,16 +31,16 @@ class Deque:
             self.__tail = (self.__tail + 1) % self.__max_n
             self.__deque_size += 1
         else:
-            raise MyException
+            raise DequeSizeException
 
     def pop_back(self):
         if self.is_empty():
-            raise MyException
+            raise DequeSizeException
         x = self.__queue[self.__tail - 1]
         self.__queue[self.__tail - 1] = None
         self.__tail = (self.__tail - 1) % self.__max_n
         self.__deque_size -= 1
-        print(x)
+        return x
 
     def push_front(self, item):
         if self.is_not_full():
@@ -48,16 +48,16 @@ class Deque:
             self.__head = (self.__head - 1) % self.__max_n
             self.__deque_size += 1
         else:
-            raise MyException
+            raise DequeSizeException
 
     def pop_front(self):
         if self.is_empty():
-            raise MyException
+            raise DequeSizeException
         x = self.__queue[self.__head]
         self.__queue[self.__head] = None
         self.__head = (self.__head + 1) % self.__max_n
         self.__deque_size -= 1
-        print(x)
+        return x
 
     def size(self):
         return self.__deque_size
@@ -79,6 +79,9 @@ if __name__ == '__main__':
         command, *arg = sys.stdin.readline().rstrip().split()
         try:
             f = ACTIONS[command]
-            f(int(arg[0])) if arg else f()
-        except MyException:
+            if arg:
+                f(int(arg[0]))
+            else:
+                print(f())
+        except DequeSizeException:
             print('error')
