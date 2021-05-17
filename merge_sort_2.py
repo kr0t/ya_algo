@@ -1,6 +1,4 @@
 # from heapq import merge
-
-
 def merge(left, right):
     result = []
     left_idx, right_idx = 0, 0
