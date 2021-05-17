@@ -39,7 +39,7 @@ def merge_sort(array):
     right = merge_sort(array[len(array) // 2: len(array)])
 
     # заводим массив для результата сортировки
-    result = [] * len(array)
+    result = [None] * len(array)
 
     # сливаем результаты
     l, r, k = 0, 0, 0
@@ -58,14 +58,14 @@ def merge_sort(array):
     while l < len(left):
         result[k] = left[l]  # перенеси оставшиеся элементы left в result
         l += 1
-    k += 1
+        k += 1
     while r < len(right):
         result[k] = right[r]  # перенеси оставшиеся элементы right в result
         r += 1
-    k += 1
+        k += 1
 
     return result
 
 
 if __name__ == '__main__':
-    merge_sort([3, 5, 6, 2, 7, 22, 4, 5, 88, 6, 0, 2, 4, 43])
+    print(merge_sort([3, 5, 6, 2, 7, 22, 4, 5, 88, 6, 0, 2, 4, 43]))
