@@ -1,12 +1,19 @@
-def is_better(first, second):
-    if first[1] == second[1]:
-        if first[2] == second[2]:
-            return first[0] < second[0]
-        return first[2] < second[2]
-    return first[1] > second[1]
+"""
+ID 51577997
+"""
+
+def get_pivot(array, lo, hi):
+    m = (lo + hi) // 2
+    result = [array[lo], array[m], array[hi]]
+    for i in range(-1, len(result) - 1):
+        if result[i + 1] < result[i]:
+            result[i], result[i + 1] = result[i + 1], result[i]
+    return result[1]
 
 
 def quick_sort(array, lo, hi):
+    if len(array) <= 1:
+        return array
     if lo < hi:
         p = partition(array, lo, hi)
         quick_sort(array, lo, p)
@@ -14,19 +21,15 @@ def quick_sort(array, lo, hi):
 
 
 def partition(array, lo, hi):
-    p = (hi + lo) // 2
-    # i = lo - 1
-    i = lo
-    # j = hi + 1
-    j = hi
+    p = get_pivot(array, lo, hi)
+    i = lo - 1
+    j = hi + 1
     while True:
-        # i += 1
-        # while array[i] > array[p] < array[i]:
-        while array[i] > array[p] and is_better(array[i], array[p]):
+        i += 1
+        while array[i] < p:
             i += 1
-        # j -= 1
-        # while array[j] < array[p] > array[j]:
-        while array[j] < array[p] and is_better(array[p], array[j]):
+        j -= 1
+        while array[j] > p:
             j -= 1
         if i >= j:
             return j
@@ -36,11 +39,10 @@ def partition(array, lo, hi):
 if __name__ == '__main__':
     with open('input.txt') as f:
         n = int(f.readline())
-        print(n)
         r = []
         for i in range(n):
             name, tasks, error = f.readline().strip().split()
-            r.append((int(tasks), int(error), name))
-            # r.append((int(tasks), int(error)))
+            r.append([-int(tasks), int(error), name])
         quick_sort(r, 0, len(r) - 1)
-        print(r)
+        names = [i[2] for i in r]
+        print(*names, sep='\n')

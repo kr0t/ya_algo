@@ -22,7 +22,18 @@ algorithm partition(A, lo, hi) is
 """
 
 
+def get_pivot(array, lo, hi):
+    m = (lo + hi) // 2
+    result = [array[lo], array[m], array[hi]]
+    for i in range(-1, len(result) - 1):
+        if result[i + 1] < result[i]:
+            result[i], result[i + 1] = result[i + 1], result[i]
+    return result[1]
+
+
 def quick_sort(array, lo, hi):
+    if len(array) <= 1:
+        return array
     if lo < hi:
         p = partition(array, lo, hi)
         quick_sort(array, lo, p)
@@ -30,15 +41,15 @@ def quick_sort(array, lo, hi):
 
 
 def partition(array, lo, hi):
-    p = (hi + lo) // 2
+    p = get_pivot(array, lo, hi)
     i = lo - 1
     j = hi + 1
     while True:
         i += 1
-        while array[i] < array[p]:
+        while array[i] < p:
             i += 1
         j -= 1
-        while array[j] > array[p]:
+        while array[j] > p:
             j -= 1
         if i >= j:
             return j
@@ -46,15 +57,12 @@ def partition(array, lo, hi):
 
 
 if __name__ == '__main__':
-    arr = [22, 5, 1, 18, 99]
-    quick_sort(arr, 0, len(arr) - 1)
-    print(arr)
-
-
-
-def sort_obj(first, second):
-    if first[0] == second[0] and first[1] == second[1]:
-        return first if first > second else second
-    if first[0] == second[0] and first[1] < second[1]:
-        return first
-
+    with open('input.txt') as f:
+        n = int(f.readline())
+        r = []
+        for i in range(n):
+            name, tasks, error = f.readline().strip().split()
+            r.append([-int(tasks), int(error), name])
+        quick_sort(r, 0, len(r) - 1)
+        names = [i[2] for i in r]
+        print(*names, sep='\n')
