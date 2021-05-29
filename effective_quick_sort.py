@@ -2,6 +2,7 @@
 ID 51577997
 """
 
+
 def get_pivot(array, lo, hi):
     m = (lo + hi) // 2
     result = [array[lo], array[m], array[hi]]
